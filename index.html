@@ -500,6 +500,14 @@
       <div class="ff full"><label>Descripción de venta *</label><textarea id="ap-descripcion" style="min-height:100px" placeholder="Escribe una descripción persuasiva del producto o servicio"></textarea></div>
       <div class="ff full"><label>"Ideal para" (una por línea)</label><textarea id="ap-bullets" placeholder="Ej: Streaming en HD/4K&#10;Múltiples dispositivos"></textarea></div>
       <div class="ff full"><label>Variantes de precio (opcional, una por línea: Nombre:Precio)</label><textarea id="ap-variantes" placeholder="Ej: IPTV Básico:1100&#10;IPTV Plus:1200&#10;IPTV Ultra:1500"></textarea></div>
+      <div class="ff full">
+        <label>Foto del producto/plan (opcional)</label>
+        <input type="file" id="ap-imagen-input" accept="image/*" onchange="handleAdminImagenFile(event)" />
+        <div id="ap-imagen-preview-wrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
+          <img id="ap-imagen-preview" src="" alt="Vista previa" style="width:90px;height:70px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:var(--bg);" />
+          <button type="button" class="btn btn-outline btn-sm" onclick="quitarImagenAdmin()">🗑 Quitar imagen</button>
+        </div>
+      </div>
       <div class="ff"><label>Distintivo (badge)</label><input type="text" id="ap-badge" placeholder="Ej: Más popular (opcional)" /></div>
       <div class="ff"><label>Ícono si no hay foto (emoji)</label><input type="text" id="ap-iconofallback" placeholder="Ej: 🏠 (opcional)" /></div>
       <div class="ff"><label>Orden</label><input type="number" id="ap-orden" min="0" step="1" /></div>
@@ -562,6 +570,39 @@ let adminPassword = localStorage.getItem(ADMIN_PASS_KEY) || factoryAdminConfig.p
 let editingProductId = null;
 let pendingCb = null;
 let expandedCards = new Set();
+let apImagenPendiente = undefined; // undefined = sin cambios, null = quitar imagen, string = nueva imagen
+
+function handleAdminImagenFile(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')) { toast('El archivo debe ser una imagen', 'err'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      const maxW = 640;
+      const scale = Math.min(1, maxW / img.width);
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      apImagenPendiente = dataUrl;
+      $('#ap-imagen-preview').src = dataUrl;
+      $('#ap-imagen-preview-wrap').style.display = 'flex';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function quitarImagenAdmin(){
+  apImagenPendiente = null;
+  $('#ap-imagen-preview').src = '';
+  $('#ap-imagen-preview-wrap').style.display = 'none';
+  $('#ap-imagen-input').value = '';
+}
 
 function toggleCardExpand(id){
   if(expandedCards.has(id)) expandedCards.delete(id); else expandedCards.add(id);
@@ -986,6 +1027,16 @@ function openAdminProductModal(id){
   $('#ap-orden').value = p?.orden ?? (catalog.length ? Math.max(...catalog.map(x=>x.orden)) + 10 : 10);
   $('#ap-activo').checked = p ? !!p.activo : true;
 
+  apImagenPendiente = undefined;
+  $('#ap-imagen-input').value = '';
+  if(p?.imagen){
+    $('#ap-imagen-preview').src = p.imagen;
+    $('#ap-imagen-preview-wrap').style.display = 'flex';
+  } else {
+    $('#ap-imagen-preview').src = '';
+    $('#ap-imagen-preview-wrap').style.display = 'none';
+  }
+
   toggleVelocidadField();
   toggleNotaInstalacion();
   $('#admin-product-overlay').classList.add('open');
@@ -1028,6 +1079,7 @@ function saveAdminProduct(){
     activo: $('#ap-activo').checked,
   };
   if(!data.variantes.length) data.variantes = null;
+  if(apImagenPendiente !== undefined) data.imagen = apImagenPendiente;
 
   if(editingProductId){
     const idx = catalog.findIndex(p=>p.id===editingProductId);
