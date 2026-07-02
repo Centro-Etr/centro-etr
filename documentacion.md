@@ -148,16 +148,16 @@ Como este archivo no tiene servidor, los cambios que hagas en el panel admin se 
 La carpeta `Plataforma Centro ETR` ya es un repositorio git local (con `index.html` y este documento). Para que la tienda tenga una dirección web real y gratuita:
 
 1. **Crear cuenta en [github.com](https://github.com)** si todavía no tienes una.
-2. **Crear un repositorio nuevo**, público (el plan gratuito de GitHub Pages requiere repos públicos). Nombre sugerido: `centro-etr-tienda`. No marcar "Add a README" (ya tenemos archivos locales).
+2. **Crear un repositorio nuevo**, público (el plan gratuito de GitHub Pages requiere repos públicos). Nombre sugerido: `centro-etr`. No marcar "Add a README" (ya tenemos archivos locales).
 3. **Conectar el repositorio local con el remoto** (GitHub te muestra estos comandos exactos al crear el repo vacío; en general son):
    ```
-   git remote add origin https://github.com/<tu-usuario>/centro-etr-tienda.git
+   git remote add origin https://github.com/<tu-usuario>/centro-etr.git
    git branch -M main
    git push -u origin main
    ```
    La primera vez puede pedirte iniciar sesión en una ventana del navegador.
 4. **Activar GitHub Pages**: en el repo, ve a *Settings → Pages*, en "Branch" selecciona `main` y carpeta `/ (root)`, y guarda.
-5. Espera 1-2 minutos y visita `https://<tu-usuario>.github.io/centro-etr-tienda/` — ahí debe cargar la tienda.
+5. Espera 1-2 minutos y visita `https://<tu-usuario>.github.io/centro-etr/` — ahí debe cargar la tienda.
 6. **Para publicar cambios futuros**: descarga el `index.html` actualizado desde el panel admin (paso anterior) y reemplázalo en el repositorio. Puedes hacerlo de dos formas:
    - **Sin usar git**: en github.com, entra al repo, abre `index.html`, botón de lápiz (editar) o "Add file → Upload files" para subir el nuevo archivo, y confirma ("Commit changes").
    - **Usando git** (si lo tienes instalado): reemplaza el archivo local y corre `git add index.html`, `git commit -m "Actualizar catálogo"`, `git push`.
