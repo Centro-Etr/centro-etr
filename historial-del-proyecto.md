@@ -69,6 +69,16 @@ Este documento registra, en orden cronológico, todo lo que se hizo para constru
 
 ---
 
+## Fase 6 — Corrección de bug en móvil y subida de imágenes desde el panel admin
+
+**Objetivo:** corregir un problema reportado en dispositivos móviles y añadir una función que faltaba en el panel de administración.
+
+- El usuario reportó (con capturas de su celular) que el botón "Enviar pedido por WhatsApp" no hacía nada en móvil, y que en su lugar aparecía una franja de búsqueda de Android/Gboard sobre el botón. Comparando las capturas y confirmando que en PC sí funcionaba, se diagnosticó **selección de texto accidental**: sin `user-select:none`, un toque impreciso en móvil se interpretaba como selección de texto en vez de un tap, lo que activaba la barra de búsqueda de Android y bloqueaba el clic real. Se corrigió agregando `user-select:none`, `-webkit-touch-callout:none` y `touch-action:manipulation` a botones, tarjetas y demás elementos táctiles.
+- El usuario también señaló que el panel de administración no permitía agregar una foto al crear/editar un producto (antes solo se podía incrustar una imagen editando el código). Se agregó un campo para **subir una foto directamente desde el formulario**, que se redimensiona automáticamente en el navegador (máximo 640px de ancho, usando `canvas`) antes de guardarse como parte del producto — sin necesitar ninguna herramienta externa.
+- Ambos cambios se publicaron de inmediato con `git commit` + `git push`, y GitHub Pages actualizó el sitio en vivo en 1-2 minutos, sin necesitar repetir ningún paso de configuración ni crear nada nuevo.
+
+---
+
 ## Estado final
 
 - La tienda está **públicamente disponible** en la URL de arriba, con todo el catálogo, carrito, checkout por WhatsApp y panel administrativo funcionando.

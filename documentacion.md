@@ -130,7 +130,7 @@ https://wa.me/18297835887?text=...
 - Se accede desde el enlace discreto **"Acceso administrador"** en el pie de página.
 - Clave por defecto: `CentroETR2026` (se puede cambiar desde el propio panel, en "Cambiar clave de acceso").
 - **Esta clave es solo una barrera básica contra accesos accidentales, no un sistema de seguridad real** — cualquier persona con conocimientos técnicos podría verla en el código fuente.
-- Permite: crear, editar y eliminar productos/servicios, activar/desactivar productos sin borrarlos, y restaurar el catálogo a los valores de fábrica.
+- Permite: crear, editar y eliminar productos/servicios, activar/desactivar productos sin borrarlos, restaurar el catálogo a los valores de fábrica, y **subir una foto** para cada producto/plan directamente desde el formulario (se redimensiona automáticamente en el navegador a un ancho máximo de 640px antes de guardarse, para no inflar el archivo).
 
 ### Cómo publicar tus cambios de precios/productos
 
@@ -145,7 +145,9 @@ Como este archivo no tiene servidor, los cambios que hagas en el panel admin se 
 
 ## Cómo publicar en GitHub Pages
 
-La carpeta `Plataforma Centro ETR` ya es un repositorio git local (con `index.html` y este documento). Para que la tienda tenga una dirección web real y gratuita:
+La tienda ya está publicada en: **https://centro-etr.github.io/centro-etr/**
+
+La carpeta `Plataforma Centro ETR` es un repositorio git local conectado a `https://github.com/Centro-Etr/centro-etr`. Pasos ya completados (se dejan documentados por si hace falta repetirlos, ej. en otra cuenta/repositorio):
 
 1. **Crear cuenta en [github.com](https://github.com)** si todavía no tienes una.
 2. **Crear un repositorio nuevo**, público (el plan gratuito de GitHub Pages requiere repos públicos). Nombre sugerido: `centro-etr`. No marcar "Add a README" (ya tenemos archivos locales).
@@ -202,5 +204,4 @@ Además, se recomienda conservar la carpeta `C:\Users\lirex\Empresa Centro ETR` 
 - Dominio propio (ej. `centroetr.com`) una vez publicada en GitHub Pages.
 - Integrar un mapa embebido de la ubicación en la sección de contacto.
 - Agregar imagen para el Plan Pueblo cuando esté disponible (hoy usa el ícono 🏠).
-- Permitir subir imágenes de productos directamente desde el panel admin (hoy solo se editan desde el archivo/código).
-- Reducir el peso del archivo (~1.4 MB) si el tiempo de carga en conexiones lentas se vuelve un problema.
+- Reducir el peso del archivo si el tiempo de carga en conexiones lentas se vuelve un problema.
